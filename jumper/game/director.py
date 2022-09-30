@@ -32,6 +32,7 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        self._do_outputs()
         while self._is_playing:
             self._get_inputs()
             self._do_updates()
@@ -53,13 +54,13 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        if not self._puzzle.process_guess(self._puzzle):
-            self._jumper.reduce_remaining_lives
-            self._is_playing = self._jumper.is_alive
+        if not self._puzzle.process_guess():
+            self._jumper.reduce_remaining_lives()
+            self._is_playing = self._jumper.is_alive()
         else:
-            if self._puzzle.is_solved:
-                self._is_playing = "False"
-                self._terminal_service.write_text("You Win!")
+            if self._puzzle.is_solved():
+                self._is_playing = False
+                
         
     def _do_outputs(self):
         """Provides a hint for the seeker to use.
@@ -67,6 +68,13 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        self._puzzle.draw_word_guessed
-        self._jumper.draw_jumper
-        self._terminal_service.write_text("^^^^^^^")
+        self._puzzle.draw_word_guessed()
+        self._jumper.draw_jumper()
+        self._terminal_service.write_text("\n^^^^^^^")
+
+        if self._is_playing == False:
+            if self._jumper.is_alive() == False:
+                self._terminal_service.write_text("Game Over. The word was " + 
+                self._puzzle._word_selected)
+            else:
+                self._terminal_service.write_text("You Win!")
