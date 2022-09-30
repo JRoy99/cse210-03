@@ -1,6 +1,7 @@
 from game.terminal_service import TerminalService
 from game.jumper import Jumper
 from game.puzzle import Puzzle
+import string
 
 
 class Director:
@@ -44,8 +45,17 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        guess_letter = self._terminal_service.read_text("\nGuess a letter [a-z]: ")
-        self._puzzle.set_guess(guess_letter)
+        _invalid_guess = True
+        while _invalid_guess:
+            _guess_letter = self._terminal_service.read_text("\nGuess a letter [a-z]: ")
+            self._puzzle.set_guess(_guess_letter)
+
+            if (_guess_letter in string.ascii_letters and 
+            _guess_letter not in self._puzzle.get_guess_list() and
+            len(_guess_letter) <= 1):
+                _invalid_guess = False
+            else:
+                self._terminal_service.write_text("Invalid Input. Please select an unused letter.")
         
         
     def _do_updates(self):
@@ -71,6 +81,7 @@ class Director:
         self._puzzle.draw_word_guessed()
         self._jumper.draw_jumper()
         self._terminal_service.write_text("\n^^^^^^^")
+        print(''.join(self._puzzle.get_guess_list()))
 
         if self._is_playing == False:
             if self._jumper.is_alive() == False:
