@@ -19,13 +19,13 @@ class Puzzle:
         self._guess_letter = guess_letter
 
     def process_guess(self):
-        _guess_correct = False
-        if self._guess_letter in self._word_selected:
-            _guess_correct = True
+        _guess_correct = True
+        if self._guess_letter not in self._word_selected:
+            _guess_correct = False
 
         return _guess_correct
 
-    def _is_solved(self):
+    def is_solved(self):
         _solved = True
 
         for i in self._word_guessed:

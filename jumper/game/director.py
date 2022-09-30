@@ -53,7 +53,13 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        self._puzzle.process_guess(self._puzzle)
+        if not self._puzzle.process_guess(self._puzzle):
+            self._jumper.reduce_remaining_lives
+            self._is_playing = self._jumper.is_alive
+        else:
+            if self._puzzle.is_solved:
+                self._is_playing = "False"
+                self._terminal_service.write_text("You Win!")
         
     def _do_outputs(self):
         """Provides a hint for the seeker to use.
@@ -61,7 +67,6 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
-        hint = self._hider.get_hint()
-        self._terminal_service.write_text(hint)
-        if self._hider.is_found():
-            self._is_playing = False
+        self._puzzle.draw_word_guessed
+        self._jumper.draw_jumper
+        self._terminal_service.write_text("^^^^^^^")
