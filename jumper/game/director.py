@@ -10,9 +10,9 @@ class Director:
     The responsibility of a Director is to control the sequence of play.
 
     Attributes:
-        hider (Hider): The game's hider.
+        jumper (Jumper): The game's jumper.
         is_playing (boolean): Whether or not to keep playing.
-        seeker (Seeker): The game's seeker.
+        seeker (puzzle): The game's Puzzle.
         terminal_service: For getting and displaying information on the terminal.
     """
 
@@ -40,7 +40,7 @@ class Director:
             self._do_outputs()
 
     def _get_inputs(self):
-        """Moves the seeker to a new location.
+        """Gets and validates user input, storing in puzzle
 
         Args:
             self (Director): An instance of Director.
@@ -59,7 +59,7 @@ class Director:
         
         
     def _do_updates(self):
-        """Keeps watch on where the seeker is moving.
+        """Checks if guess was correct. If not, reduces jumper lives. Checks multiple end-state conditions
 
         Args:
             self (Director): An instance of Director.
@@ -73,7 +73,8 @@ class Director:
                 
         
     def _do_outputs(self):
-        """Provides a hint for the seeker to use.
+        """Displays current guessed word, the jumper, and all guessed letters to user.
+           Also displays end game messages
 
         Args:
             self (Director): An instance of Director.
@@ -86,6 +87,6 @@ class Director:
         if self._is_playing == False:
             if self._jumper.is_alive() == False:
                 self._terminal_service.write_text("Game Over. The word was " + 
-                self._puzzle._word_selected)
+                self._puzzle._word_selected + ".")
             else:
                 self._terminal_service.write_text("You Win!")
